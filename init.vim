@@ -280,13 +280,33 @@ func! CompileRunGcc()
 		set splitbelow
 		:sp
 		:res -5
-		term javac % && time java %<
+		term javac % 
 	elseif &filetype == 'sh'
 		:!time bash %
 	elseif &filetype == 'python'
 		set splitbelow
 		:sp
 		:term python3 %
+	elseif &filetype == 'R'
+		set splitbelow
+		:sp
+		:term Rscript %
+	elseif &filetype == 'ruby'
+		set splitbelow
+		:sp
+		:term ruby %
+	elseif &filetype == 'rust'
+		set splitbelow
+		:sp
+		:term rustc % -o %< && ./%<
+	elseif &filetype == 'lua'
+		set splitbelow
+		:sp
+		:term lua %
+	elseif &filetype == 'kotlin'
+		set splitbelow
+		:sp
+		:term kotlinc % -include-runtime -d %<.jar && java -jar %<.jar
 	elseif &filetype == 'html'
 		silent! exec "!".g:mkdp_browser." % &"
 	elseif &filetype == 'markdown'
@@ -347,6 +367,10 @@ Plug 'pechorin/any-jump.vim'
 
 " Debugger
 " Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python --enable-go'}
+" 
+
+"ctag
+Plug 'liuchengxu/vista.vim'
 
 " Auto Complete
 Plug 'neoclide/coc.nvim', { 'commit': '63dd239bfe02998810b39d039827e2510885b57b', 'do': 'yarn install --frozen-lockfile' }
@@ -369,7 +393,7 @@ Plug 'cohama/agit.vim'
 Plug 'kdheepak/lazygit.nvim'
 
 " Tex
-" Plug 'lervag/vimtex'
+Plug 'lervag/vimtex'
 
 " CSharp
 Plug 'OmniSharp/omnisharp-vim'
@@ -410,6 +434,27 @@ Plug 'tweekmonster/braceless.vim', { 'for' :['python', 'vim-plug'] }
 "Plug 'plytophogy/vim-virtualenv', { 'for' :['python', 'vim-plug'] }
 "Plug 'tmhedberg/SimpylFold', { 'for' :['python', 'vim-plug'] }
 
+" Maven
+Plug 'mikelue/vim-maven-plugin'
+
+" Gradle
+Plug 'simonhicks/gradle.vim'
+
+" Ruby
+Plug 'vim-ruby/vim-ruby' , { 'for':['ruby', 'vim-plug'] }
+
+" Rust
+Plug 'rust-lang/rust.vim', { 'for':['rust', 'vim-plug'] }
+
+" Lua
+Plug 'tbastos/vim-lua', { 'for':['lua', 'vim-plug']}
+
+" Kotlin
+Plug 'udalov/kotlin-vim', { 'for':['kotlin', 'vim-plug']}
+
+" R
+Plug 'jalvesaq/Nvim-R', { 'for':['R', 'vim-plug'] }
+
 " Dart
 Plug 'dart-lang/dart-vim-plugin', { 'for': ['dart', 'vim-plug'] }
 
@@ -422,6 +467,11 @@ Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
 Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] }
 Plug 'dkarter/bullets.vim'
+Plug 'tpope/vim-markdown'
+Plug 'img-paste-devs/img-paste.vim'
+
+" Rails
+Plug 'tpope/vim-rails'
 
 " Other filetypes
 Plug 'wlangstroth/vim-racket'
@@ -485,6 +535,10 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'wincent/terminus'
 Plug 'kyazdani42/nvim-web-devicons'
 
+"  mysql
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
+
 " Other useful utilities
 Plug 'lambdalisue/suda.vim' " do stuff like :sudowrite
 " Plug 'makerj/vim-pdf'
@@ -506,6 +560,11 @@ hi NonText ctermfg=gray guifg=grey10
 " ==================== eleline.vim ====================
 let g:airline_powerline_fonts = 0
 
+" ==================== vim-dadbod =====================
+let g:dbs = [
+ 		\ { 'name': 'localmysql', 'url': 'mysql://root@localhost:3306/'}
+ 		\ ]
+let g:db_ui_use_nerd_fonts=1
 
 " ==================== gitsigns.nvim ====================
 lua <<EOF
@@ -529,7 +588,12 @@ nnoremap <LEADER>g= :Gitsigns next_hunk<CR>
 
 " ==================== coc.nvim ====================
 let g:coc_global_extensions = [
+	\ 'coc-marketplace',
 	\ 'coc-css',
+	\ 'coc-actions',
+	\ 'coc-java-debug',
+	\ 'coc-java-vimspector',
+	\ 'coc-xml',
 	\ 'coc-diagnostic',
 	\ 'coc-docker',
 	\ 'coc-eslint',
@@ -539,6 +603,11 @@ let g:coc_global_extensions = [
 	\ 'coc-html',
 	\ 'coc-import-cost',
 	\ 'coc-java',
+	\ 'coc-java-dependency',
+	\ 'coc-java-lombok',
+	\ 'coc-jira-complete',
+	\ 'coc-qml',
+	\ 'coc-java-intellicode',
 	\ 'coc-jest',
 	\ 'coc-json',
 	\ 'coc-lists',
@@ -550,12 +619,18 @@ let g:coc_global_extensions = [
 	\ 'coc-sourcekit',
 	\ 'coc-stylelint',
 	\ 'coc-syntax',
-	\ 'https://github.com/theniceboy/coc-tailwindcss',
+	\ 'coc-lua',
+	\ 'coc-kotlin',
+	\ 'coc-tailwindcss',
 	\ 'coc-tasks',
 	\ 'coc-translator',
 	\ 'coc-tsserver',
 	\ 'coc-vetur',
 	\ 'coc-vimlsp',
+	\ 'coc-sql',
+	\ 'coc-r-lsp',
+	\ 'coc-solargraph',
+	\ 'coc-rust-analyzer',
 	\ 'coc-yaml',
 	\ 'coc-yank']
 inoremap <silent><expr> <TAB>
@@ -833,6 +908,18 @@ map <LEADER>gy :Goyo<CR>
 " ==================== jsx ====================
 let g:vim_jsx_pretty_colorful_config = 1
 
+" ==================== ctag ===================
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
+set statusline+=%{NearestMethodOrFunction()}
+
+" By default vista.vim never run if you don't call it explicitly.
+"
+" If you want to show the nearest function in your statusline automatically,
+" you can add the following line to your vimrc
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 " ==================== tabular ====================
 vmap ga :Tabularize /
