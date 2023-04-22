@@ -291,6 +291,10 @@ func! CompileRunGcc()
 		set splitbelow
 		:sp
 		:term Rscript %
+	elseif &filetype == 'php'
+		set splitbelow
+		:sp
+		:term php %
 	elseif &filetype == 'ruby'
 		set splitbelow
 		:sp
@@ -339,7 +343,10 @@ call plug#begin('$HOME/.config/nvim/plugged')
 
 Plug 'itchyny/vim-cursorword'
 
-" Github Copilot
+"leetcode
+Plug '8ooo8/leetcode'
+
+"" Github Copilot
 Plug 'github/copilot.vim'
 
 " Treesitter
@@ -412,7 +419,7 @@ Plug 'yuezk/vim-js', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', '
 " Plug 'jelera/vim-javascript-syntax', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
 "Plug 'jaxbot/browserlink.vim'
 Plug 'HerringtonDarkholme/yats.vim'
-" Plug 'posva/vim-vue'
+Plug 'posva/vim-vue'
 " Plug 'evanleck/vim-svelte', {'branch': 'main'}
 " Plug 'leafOfTree/vim-svelte-plugin'
 " Plug 'leafgarland/typescript-vim'
@@ -422,6 +429,9 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'pantharshit00/vim-prisma'
+
+" GraphQL
+Plug 'jparise/vim-graphql'
 
 " Go
 Plug 'fatih/vim-go' , { 'for': ['go', 'vim-plug'], 'tag': '*' }
@@ -461,6 +471,9 @@ Plug 'dart-lang/dart-vim-plugin', { 'for': ['dart', 'vim-plug'] }
 " Swift
 Plug 'keith/swift.vim'
 Plug 'arzg/vim-swift'
+
+" Vim-script
+Plug 'vim-scripts/utl.vim'
 
 " Markdown
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
@@ -590,6 +603,9 @@ nnoremap <LEADER>g= :Gitsigns next_hunk<CR>
 let g:coc_global_extensions = [
 	\ 'coc-marketplace',
 	\ 'coc-css',
+	\ 'coc-phpls',
+	\ '@yaegassy/coc-intelephense',
+	\ 'coc-php-cs-fixer',
 	\ 'coc-actions',
 	\ 'coc-java-debug',
 	\ 'coc-java-vimspector',
@@ -626,6 +642,11 @@ let g:coc_global_extensions = [
 	\ 'coc-translator',
 	\ 'coc-tsserver',
 	\ 'coc-vetur',
+	\ '@yaegassy/coc-volar',
+	\ '@yaegassy/coc-volar-tools',
+	\ 'coc-react-refactor',
+	\ 'coc-simple-react-snippets',
+	\ '@yaegassy/coc-astro',
 	\ 'coc-vimlsp',
 	\ 'coc-sql',
 	\ 'coc-r-lsp',
